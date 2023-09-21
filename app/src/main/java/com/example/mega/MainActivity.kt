@@ -2,22 +2,23 @@ package com.example.mega
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.webkit.GeolocationPermissions
+import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mega.WebChromeClientCustomPoster.WebChromeClientCustomPoster
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
     val PERMISSION_REQUEST_CODE = 123
     lateinit var webView: WebView
 
@@ -67,6 +68,12 @@ class MainActivity : AppCompatActivity() {
 
                 // 권한 요청 결과를 WebView에 전달
                 callback.invoke(origin, true, false)
+            }
+
+            override fun onPermissionRequest(request : PermissionRequest) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    request.grant(request.getResources());
+                }
             }
         }
 
